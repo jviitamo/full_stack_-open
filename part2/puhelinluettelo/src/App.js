@@ -26,6 +26,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [filterPerson, setFilterPerson ] = useState('')
+  const [ errorMessage, setErrorMessage ] = useState('')
 
   useEffect(() => {
     peopleService
@@ -42,6 +43,26 @@ const App = () => {
       name: newName,
       number: newNumber
     }
+
+    if (persons.map(person => person.name).includes(newName)) {
+      let value = false
+      value = window.confirm(`${newName} is already added in the phonebook, do you want to change the number?`)
+      if (value) {
+        const person = persons.find(x => x.name === newName)
+        const changedPerson = { ...person, number: newNumber }
+        peopleService
+          .update(person.id, changedPerson)
+          .then(returned => {
+            setPersons(persons.map(person => person.name !== newName ? person : returned))
+            setNewName('')
+            setNewNumber('')
+          })
+        setErrorMessage(`A person called ${person.name} was updated`)
+        setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+ }
+} else {
      
     const x = persons.map(z => z.name)
     if (x.includes(newName)) {window.alert("name is already added to phonebook")}
@@ -55,8 +76,13 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      setErrorMessage(`A person called ${person.name} was added`)
+      setTimeout(() => {
+      setErrorMessage(null)
+      }, 5000)
     }
   }
+} 
 
   const deleteName = id => {
     const person = persons.find(n => n.id === id)
@@ -69,6 +95,10 @@ const App = () => {
         const excluded = persons.filter(person => person.id !== id)
         setPersons(excluded)
       })
+      setErrorMessage(`A person called ${person.name} was deleted`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
   }
 }
 
@@ -99,9 +129,18 @@ const App = () => {
     )
   }
 
+  const errorStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 30,
+    background: 'lightgray',
+    width: '60%'
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div style={errorStyle}>{errorMessage}</div>
       <Filter handleFilterName={handleFilterName} filterPerson={filterPerson}/>
       <h2>Add a new</h2>
       <PersonForm addName={addName} newName={newName} handleNameChange={handleNameChange}  newNumber={newNumber} handleNewNumber={handleNewNumber} deleteName={deleteName}/>
