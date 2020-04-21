@@ -11,7 +11,7 @@ const details = ( {country} ) => {
          <p>population: {country.population}</p>
          <p>languages</p>
         <ul>{country.languages.map(language => <li>{language.name}</li>)}</ul>
-        <img src={country.flag} width="20%"/>
+        <img src={country.flag} alt="flag" width="20%"/>
         </div>
     )
 }

@@ -13,11 +13,11 @@ const Head = ({name}) => {
 }
 
 const Curriculum = ({courses}) => {
-  const List = courses.map((course) => <Course key={course.name} course={course}/>)
+  const all = courses.map((course) => <Course key={course.name} course={course}/>)
   return (
      <div>
        <Head name="Web development curriculum"/>
-       {List}
+       {all}
      </div>
   )
 }

@@ -11,7 +11,7 @@ const Filter = ( {filterPerson, handleFilterName} ) => {
 const PersonForm = ( {addName, newName, handleNameChange, newNumber, handleNewNumber} ) => {
   return (
 <form onSubmit={addName}>
-        <div> name: <input value={newName} onChange={handleNameChange}/></div>
+        <div>name: <input value={newName} onChange={handleNameChange}/></div>
         <div>number: <input value={newNumber} onChange={handleNewNumber}/></div>
         <div>
           <button type="submit">add</button>
@@ -26,7 +26,9 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [filterPerson, setFilterPerson ] = useState('')
-  const [ errorMessage, setErrorMessage ] = useState('')
+  const [ goodErrorMessage, setGoodErrorMessage ] = useState('')
+  const [ badErrorMessage, setBadErrorMessage ] = useState('')
+
 
   useEffect(() => {
     peopleService
@@ -57,9 +59,9 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
-        setErrorMessage(`A person called ${person.name} was updated`)
+        setGoodErrorMessage(`A person called ${person.name} was updated`)
         setTimeout(() => {
-        setErrorMessage(null)
+        setGoodErrorMessage(null)
       }, 5000)
  }
 } else {
@@ -76,13 +78,9 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
-      .catch(error => {
-         if (error.response) setErrorMessage(error.response.data.error)
-         else setErrorMessage(`A person called ${person.name} was added`)
-
-      })
+      setGoodErrorMessage(`A person called ${person.name} was added`)
       setTimeout(() => {
-      setErrorMessage(null)
+      setGoodErrorMessage(null)
       }, 5000)
     }
   }
@@ -99,9 +97,9 @@ const App = () => {
         const excluded = persons.filter(person => person.id !== id)
         setPersons(excluded)
       })
-      setErrorMessage(`A person called ${person.name} was deleted`)
+      setBadErrorMessage(`A person called ${person.name} was deleted`)
       setTimeout(() => {
-        setErrorMessage(null)
+        setBadErrorMessage(null)
       }, 5000)
   }
 }
@@ -133,8 +131,15 @@ const App = () => {
     )
   }
 
-  const errorStyle = {
+  const errorStyle1 = {
     color: 'green',
+    fontStyle: 'italic',
+    fontSize: 30,
+    background: 'lightgray',
+    width: '60%'
+  }
+  const errorStyle2 = {
+    color: 'red',
     fontStyle: 'italic',
     fontSize: 30,
     background: 'lightgray',
@@ -144,7 +149,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div style={errorStyle}>{errorMessage}</div>
+      <div style={errorStyle1}>{goodErrorMessage}</div>
+      <div style={errorStyle2}>{badErrorMessage}</div>
       <Filter handleFilterName={handleFilterName} filterPerson={filterPerson}/>
       <h2>Add a new</h2>
       <PersonForm addName={addName} newName={newName} handleNameChange={handleNameChange}  newNumber={newNumber} handleNewNumber={handleNewNumber} deleteName={deleteName}/>

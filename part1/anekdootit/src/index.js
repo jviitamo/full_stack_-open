@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom'
 import "./index.css"
 
 
-const App = ({anecdotes}) => {
+const App = ({original}) => {
   const [selected, setSelected] = useState(0)
-  const [anec, setAnec] = useState(anecdotes)
+  const [anecdotes, setAnecdotes] = useState(original)
 
 
   const handleRandom = () => {
@@ -13,16 +13,16 @@ const App = ({anecdotes}) => {
   }
 
   const handleVote = () => {
-    const copy = [...anec]
-    copy[selected].value = copy[selected].value+1
-    setAnec(copy)
+    const copied = [...anecdotes]
+    copied[selected].value = copied[selected].value+1
+    setAnecdotes(copied)
   }
 
   return (
     <div>
       <div id="d">
-      <div>{anec[selected].text}</div>
-       {anec[selected].value}
+      <div>{anecdotes[selected].text}</div>
+       {anecdotes[selected].value}
       </div>
       <div className="x">
       <button onClick={handleRandom}>next anecdote</button>
@@ -32,7 +32,7 @@ const App = ({anecdotes}) => {
   )
 }
 
-const anecdotes = [
+const original = [
   {
     text: 'If it hurts, do it more often',
     value: 0
@@ -61,6 +61,6 @@ const anecdotes = [
 
 
 ReactDOM.render(
-  <App anecdotes={anecdotes} />,
+  <App original={original} />,
   document.getElementById('root')
 )

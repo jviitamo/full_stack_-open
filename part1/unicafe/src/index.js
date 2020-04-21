@@ -22,13 +22,13 @@ const Statistics = ({good, neutral, bad, all, average, positive}) => {
       <StatisticLine text="bad" value={bad}/>
       <StatisticLine text="all" value={all}/>
       <StatisticLine text="average" value={average}/>
-      <StatisticLine text="positive" value={positive}/> 
+      <StatisticLine text="positive" value={100*positive}/> 
     </table>
   </tbody>
   )
 }
 
-const StatisticLine = ({text, value, positive}) => {
+const StatisticLine = ({text, value}) => {
   return (
    
       <tr>
@@ -40,7 +40,6 @@ const StatisticLine = ({text, value, positive}) => {
 }
 
 const App = () => {
-  // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
