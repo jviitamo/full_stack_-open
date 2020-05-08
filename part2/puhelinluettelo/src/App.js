@@ -1,25 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import peopleService from './services/people'
-
-
-const Filter = ( {filterPerson, handleFilterName} ) => {
-  return (
-    <div>filter shown with <input value={filterPerson} onChange={handleFilterName}/></div>
-  )
-}
-
-const PersonForm = ( {addName, newName, handleNameChange, newNumber, handleNewNumber} ) => {
-  return (
-<form onSubmit={addName}>
-        <div>name: <input value={newName} onChange={handleNameChange}/></div>
-        <div>number: <input value={newNumber} onChange={handleNewNumber}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-  )
-}
-
+import RenderPeople from './components/RenderPeople'
+import PersonForm from './components/PersonForm'
+import Filter from './components/Filter'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
@@ -116,20 +99,7 @@ const App = () => {
     setFilterPerson(event.target.value)
   }
 
-  const RenderPeople = () => {
-    const filteredPersons = persons.filter(person => person.name.toUpperCase().indexOf(filterPerson.toUpperCase()) >= 0)
-    const people = filteredPersons.map(person => 
-                    <li>
-                     {person.name} {person.number}
-                     <button onClick={() => deleteName(person.id)}>delete</button>
-                    </li>
-                   )
-    return (
-      <ul>
-      {people}   
-      </ul>
-    )
-  }
+
 
   const errorStyle1 = {
     color: 'green',
@@ -155,7 +125,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm addName={addName} newName={newName} handleNameChange={handleNameChange}  newNumber={newNumber} handleNewNumber={handleNewNumber} deleteName={deleteName}/>
       <h2>Numbers</h2>
-      <RenderPeople persons={persons} filterPerson={filterPerson}/>
+      <RenderPeople persons={persons} filterPerson={filterPerson} deleteName={deleteName}/>
     </div>
   )
 
