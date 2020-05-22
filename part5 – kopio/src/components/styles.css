@@ -1,0 +1,9 @@
+.toggle {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.inner {
+    display: flex;
+    flex-direction: column;
+}
